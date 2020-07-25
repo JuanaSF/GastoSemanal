@@ -40,9 +40,24 @@ class Interfaz {
             formulario.reset();
         }, 3000);
     }
+    agregarGastoListado(gasto){
+        const listaGastos = document.querySelector('#gastos ul');
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between aling-items-center';
+        li.innerHTML = `
+                ${gasto.nombre}
+            <span class='badge badge-primary badge-pill'> $ ${gasto.cantidad}</span>
+        `;
+        listaGastos.appendChild(li);
+    }
 }
 
-
+class Gasto {
+    constructor(nombre, cantidad){
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
+}
 
 // ---------------- Events Listeners -------------------
 
@@ -61,14 +76,16 @@ document.addEventListener('DOMContentLoaded', function(){
 formulario.addEventListener('submit', function(e){
     e.preventDefault();
     // se lee del formulario de gastos
-    const nombreGasto = document.getElementById('gasto').value;
-    const cantidadGasto = document.getElementById('cantidad').value;
-
+    const nuevoGasto = new Gasto();
+    nuevoGasto.nombre = document.getElementById('gasto').value;
+    nuevoGasto.cantidad = document.getElementById('cantidad').value;
+    
     const ui = new Interfaz();
     //Comprobar que los campos no esten vacios
-    if(nombreGasto ==='' || cantidadGasto ===''){
+    if(nuevoGasto.nombre ==='' || nuevoGasto.cantidad ===''){
         ui.imprimirMensaje('hubo un error, por favor complete los campos', 'error');
     } else {
         ui.imprimirMensaje('agregando gasto...', 'correcto');
+        ui.agregarGastoListado(nuevoGasto);
     }
 })
